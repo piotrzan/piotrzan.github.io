@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piotr Żandarski</title>
+<meta name="description" content="Piotr Żandarski — fizyk, analiza danych eksperymentalnych. Python, SQL, C++/ROOT.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,500;112,700;100,400;100,600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+/* Layout: a lab-notebook column — narrow reading measure, data set in mono, one real chart as the centrepiece */
+:root {
+  --paper: #eef2f4;
+  --surface: #f8fafb;
+  --ink: #142029;
+  --muted: #56636d;
+  --rule: #cdd6dc;
+  --glow: #2459d6;      /* Cherenkov blue */
+  --glow-soft: #2459d61f;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0c131b; --surface: #121b25; --ink: #e3e9ee; --muted: #93a1ac;
+    --rule: #263340; --glow: #6f9bff; --glow-soft: #6f9bff26; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0c131b; --surface: #121b25; --ink: #e3e9ee; --muted: #93a1ac;
+  --rule: #263340; --glow: #6f9bff; --glow-soft: #6f9bff26; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 760px; margin: 0 auto; padding-inline: 20px; padding-block: 56px 72px; display: grid; gap: 64px; }
+a { color: var(--glow); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--glow); outline-offset: 3px; border-radius: 2px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* Hero */
+header { display: grid; gap: 18px; }
+h1 { font-size: clamp(40px, 8vw, 64px); font-weight: 700; font-stretch: 112%; line-height: 1.02; letter-spacing: -0.02em; }
+.lede { font-size: 20px; max-width: 34em; margin: 0; }
+.lede em { font-style: normal; color: var(--glow); }
+.links { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; font-family: var(--mono); font-size: 14px; }
+.email { display: inline-flex; gap: 8px; align-items: center; }
+.email code { font-family: var(--mono); user-select: all; }
+button.copy { font: inherit; font-size: 12px; background: none; border: 1px solid var(--rule); color: var(--muted); padding: 2px 8px; border-radius: 3px; cursor: pointer; }
+button.copy:hover { border-color: var(--glow); color: var(--glow); }
+
+/* Sections */
+section { display: grid; gap: 22px; }
+h2 { font-size: 15px; font-weight: 600; font-stretch: 100%; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+h3 { font-size: 23px; font-weight: 600; font-stretch: 100%; line-height: 1.2; }
+.work { display: grid; gap: 12px; }
+.meta { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.work p { margin: 0; }
+.stack { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 4px 0 0; font-family: var(--mono); font-size: 12.5px; }
+.stack li { padding: 2px 8px; border-radius: 3px; background: var(--glow-soft); color: var(--ink); }
+
+/* Featured: MARIA */
+.feature { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 26px clamp(18px, 4vw, 30px); display: grid; gap: 14px; }
+.result { font-family: var(--mono); font-size: clamp(20px, 4.4vw, 26px); color: var(--glow); font-weight: 500; }
+.result small { display: block; font-size: 12.5px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+figure { margin: 6px 0 0; display: grid; gap: 8px; }
+.chart { overflow-x: auto; }
+.chart svg { display: block; width: 100%; min-width: 440px; height: auto; }
+figcaption { font-size: 14px; color: var(--muted); }
+.feature ul:not(.stack) { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+
+.projects { display: grid; gap: 28px; }
+.skills { display: grid; grid-template-columns: max-content 1fr; gap: 10px 22px; margin: 0; }
+.skills dt { font-family: var(--mono); font-size: 13px; color: var(--muted); padding-top: 3px; }
+.skills dd { margin: 0; min-width: 0; }
+@media (max-width: 560px) { .skills { grid-template-columns: 1fr; gap: 2px; } .skills dd { margin-bottom: 10px; } }
+footer { font-family: var(--mono); font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 18px; }
+@media (prefers-reduced-motion: no-preference) {
+  .pt { transition: r .15s; } .pt:hover { r: 6; }
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="label">Fizyka · analiza danych · Warszawa</div>
+    <h1>Piotr Żandarski</h1>
+    <p class="lede">Studiuję fizykę na Uniwersytecie Warszawskim. Zajmuję się <em>danymi z&nbsp;prawdziwych pomiarów</em>: sygnałami z&nbsp;reaktora badawczego, widmami z&nbsp;detektora promieniowania, a&nbsp;poza uczelnią danymi biznesowymi w&nbsp;Pythonie i&nbsp;SQL. Szukam pierwszej pracy jako analityk danych.</p>
+    <div class="links">
+      <a href="CV_Piotr_Zandarski.pdf">CV (PDF)</a>
+      <a href="https://github.com/piotrzan">GitHub</a>
+      <span class="email"><code id="mail">piotrzandarski314@gmail.com</code><button class="copy" id="copy" type="button">kopiuj</button></span>
+    </div>
+  </header>
+
+  <section aria-labelledby="h-research">
+    <h2 id="h-research">Badania</h2>
+
+    <article class="feature">
+      <div class="meta">Praktyki · NCBJ Świerk · reaktor MARIA · 2026</div>
+      <h3>Temperaturowy współczynnik reaktywności wody w&nbsp;kanałach paliwowych</h3>
+      <p>Jak bardzo reaktor sam się hamuje, gdy woda chłodząca się nagrzewa? Z&nbsp;czterogodzinnego zapisu mocy, temperatur i&nbsp;pozycji pręta kompensacyjnego (144&nbsp;010 próbek przy 10&nbsp;Hz) policzyłem przebieg reaktywności metodą odwrotnej kinetyki punktowej, a&nbsp;potem dopasowałem do niego model liniowy.</p>
+      <div class="result">α<sub>K</sub> = (−1,2 ± 0,5) ¢/°C<small>wynik końcowy · rozrzut czterech metod estymacji</small></div>
+      <figure>
+        <div class="chart" id="chart" role="img" aria-label="Wykres wartości współczynnika alfa K reaktora MARIA w latach 2013–2026. Pomiar z 2026 roku, minus 1,2 plus minus 0,5 centa na stopień, mieści się w zakresie historycznym od minus 0,9 do minus 1,7."></div>
+        <figcaption>Mój pomiar na tle wcześniejszych pomiarów α<sub>K</sub> reaktora MARIA (dane historyczne z&nbsp;instrukcji pomiarowej; dla lat 2013–2018 bez podanej niepewności).</figcaption>
+      </figure>
+      <ul>
+        <li>Automatyczna detekcja sześciu kroków pomiarowych z&nbsp;sygnału pozycji pręta.</li>
+        <li>Wygładzanie i&nbsp;różniczkowanie mocy filtrem Savitzky-Golaya; całkowanie równań prekursorów neutronów opóźnionych.</li>
+        <li>Cztery niezależne estymacje, analiza wrażliwości na szerokość okna filtra, wykrycie i&nbsp;korekta błędu skali w&nbsp;kanale mocy.</li>
+      </ul>
+      <ul class="stack"><li>Python</li><li>NumPy</li><li>SciPy</li><li>Matplotlib</li><li>LaTeX</li></ul>
+    </article>
+
+    <article class="work">
+      <div class="meta">Projekt licencjacki · Zakład Fizyki Jądrowej UW</div>
+      <h3>Rozpad beta <sup>92</sup>Y w&nbsp;spektroskopii całkowitej absorpcji</h3>
+      <p>Analiza danych z&nbsp;detektora Lucrecia: budowa i&nbsp;filtrowanie histogramów, warunki koincydencji z&nbsp;sygnałem beta, przygotowanie wykresów i&nbsp;prezentacji wyników.</p>
+      <ul class="stack"><li>C++</li><li>ROOT</li><li>LaTeX / Beamer</li></ul>
+    </article>
+  </section>
+
+  <section aria-labelledby="h-proj">
+    <h2 id="h-proj">Projekty z&nbsp;analizy danych</h2>
+    <div class="projects">
+      <article class="work">
+        <h3>Predykcja rezygnacji klientów</h3>
+        <p>Pełny pipeline uczenia maszynowego: przygotowanie danych bez wycieku informacji, porównanie regresji logistycznej, Random Forest i&nbsp;Gradient Boosting, model udostępniony przez API, testy automatyczne i&nbsp;CI.</p>
+        <ul class="stack"><li>scikit-learn</li><li>FastAPI</li><li>Docker</li><li>GitHub Actions</li></ul>
+      </article>
+      <article class="work">
+        <h3>Analiza sprzedaży e-commerce</h3>
+        <p>Dane transakcyjne w&nbsp;PostgreSQL i&nbsp;recenzje w&nbsp;MongoDB; zapytania analityczne z&nbsp;CTE i&nbsp;funkcjami okienkowymi, całość uruchamiana jednym poleceniem przez Docker Compose.</p>
+        <ul class="stack"><li>SQL</li><li>PostgreSQL</li><li>MongoDB</li><li>Docker Compose</li></ul>
+      </article>
+      <article class="work">
+        <h3>Analiza rotacji pracowników</h3>
+        <p>Testy t i&nbsp;chi-kwadrat, regresja logistyczna i&nbsp;raport z&nbsp;wizualizacjami.</p>
+        <ul class="stack"><li>R</li><li>tidyverse</li><li>ggplot2</li><li>R Markdown</li></ul>
+      </article>
+    </div>
+    <p class="meta">Kod wszystkich projektów: <a href="https://github.com/piotrzan">github.com/piotrzan</a></p>
+  </section>
+
+  <section aria-labelledby="h-skills">
+    <h2 id="h-skills">Umiejętności</h2>
+    <dl class="skills">
+      <dt>języki programowania</dt><dd>Python (Pandas, NumPy, SciPy, scikit-learn), SQL, C++ / ROOT, R</dd>
+      <dt>narzędzia</dt><dd>Git, Docker, FastAPI, Excel (Power Query), Power BI, LaTeX</dd>
+      <dt>metody</dt><dd>regresja, testowanie hipotez, analiza niepewności, przetwarzanie sygnałów, metody numeryczne</dd>
+      <dt>języki</dt><dd>polski, angielski C1/C2, niemiecki B2</dd>
+    </dl>
+  </section>
+
+  <section aria-labelledby="h-about">
+    <h2 id="h-about">Poza fizyką</h2>
+    <p style="margin:0">Zanim wybrałem fizykę, przez dwa lata studiowałem fortepian w&nbsp;Hochschule für Musik und Theater w&nbsp;Hamburgu. Pracowałem też w&nbsp;obsłudze klienta po angielsku i&nbsp;niemiecku.</p>
+  </section>
+
+  <footer>© 2026 Piotr Żandarski</footer>
+</div>
+
+<script>
+(function () {
+  // α_K history for MARIA (Tabela 1 instrukcji 02-IJ-26) + my 2026 result
+  var data = [
+    { y: 2013, v: -1.4 }, { y: 2016, v: -1.3 }, { y: 2018, v: -1.7 },
+    { y: 2020, v: -0.9, e: 0.3 }, { y: 2024, v: -1.6, e: 0.3 }, { y: 2025, v: -1.0, e: 0.3 },
+    { y: 2026, v: -1.2, e: 0.5, me: true }
+  ];
+  var W = 640, H = 250, L = 64, R = 24, T = 18, B = 40;
+  var x0 = 2012, x1 = 2027, y0 = -2.0, y1 = 0.0;
+  var sx = function (x) { return L + (x - x0) / (x1 - x0) * (W - L - R); };
+  var sy = function (v) { return T + (y1 - v) / (y1 - y0) * (H - T - B); };
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, monospace" font-size="12">';
+  // historical band
+  s += '<rect x="' + L + '" y="' + sy(-0.9) + '" width="' + (W - L - R) + '" height="' + (sy(-1.7) - sy(-0.9)) + '" fill="var(--glow-soft)"/>';
+  [-2.0, -1.5, -1.0, -0.5, 0].forEach(function (v) {
+    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(v) + '" y2="' + sy(v) + '" stroke="var(--rule)" stroke-width="1"/>';
+    s += '<text x="' + (L - 10) + '" y="' + (sy(v) + 4) + '" text-anchor="end" fill="var(--muted)">' + v.toFixed(1).replace('.', ',').replace('-', '−') + '</text>';
+  });
+  s += '<text x="14" y="' + ((T + H - B) / 2) + '" fill="var(--muted)" transform="rotate(-90 14 ' + ((T + H - B) / 2) + ')" text-anchor="middle">α_K [¢/°C]</text>';
+  s += '<text x="' + (L + 8) + '" y="' + (sy(-0.9) - 6) + '" text-anchor="start" fill="var(--muted)" font-size="11">zakres 2013–2025</text>';
+  data.forEach(function (d) {
+    var cx = sx(d.y), cy = sy(d.v), col = d.me ? 'var(--glow)' : 'var(--ink)';
+    if (d.e) {
+      s += '<line x1="' + cx + '" x2="' + cx + '" y1="' + sy(d.v + d.e) + '" y2="' + sy(d.v - d.e) + '" stroke="' + col + '" stroke-width="' + (d.me ? 2 : 1.2) + '"/>';
+      [d.v + d.e, d.v - d.e].forEach(function (q) {
+        s += '<line x1="' + (cx - 5) + '" x2="' + (cx + 5) + '" y1="' + sy(q) + '" y2="' + sy(q) + '" stroke="' + col + '" stroke-width="' + (d.me ? 2 : 1.2) + '"/>';
+      });
+    }
+    s += '<circle class="pt" cx="' + cx + '" cy="' + cy + '" r="' + (d.me ? 5.5 : 4) + '" fill="' + (d.me ? 'var(--glow)' : 'var(--surface)') + '" stroke="' + col + '" stroke-width="1.6"><title>' + d.y + ': ' + String(d.v).replace('.', ',') + (d.e ? ' ± ' + String(d.e).replace('.', ',') : '') + ' ¢/°C</title></circle>';
+    s += '<text x="' + cx + '" y="' + (H - B + 20) + '" text-anchor="middle" fill="' + (d.me ? 'var(--glow)' : 'var(--muted)') + '"' + (d.me ? ' font-weight="500"' : '') + '>' + d.y + '</text>';
+  });
+  s += '</svg>';
+  document.getElementById('chart').innerHTML = s;
+
+  var btn = document.getElementById('copy');
+  btn.addEventListener('click', function () {
+    var t = document.getElementById('mail').textContent;
+    var done = function () { btn.textContent = 'skopiowano'; setTimeout(function () { btn.textContent = 'kopiuj'; }, 1600); };
+    try {
+      navigator.clipboard.writeText(t).then(done, function () { selectMail(); });
+    } catch (e) { selectMail(); }
+  });
+  function selectMail() {
+    var r = document.createRange(); r.selectNodeContents(document.getElementById('mail'));
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+  }
+})();
+</script>
+
+</body>
+</html>
