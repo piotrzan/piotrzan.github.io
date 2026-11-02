@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Piotr Żandarski</title>
-<meta name="description" content="Piotr Żandarski — fizyk, analiza danych eksperymentalnych. Python, SQL, C++/ROOT.">
+<meta name="description" content="Piotr Żandarski: analiza danych, modelowanie ilościowe i prognozowanie. Python, SQL.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,500;112,700;100,400;100,600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -68,6 +68,7 @@ h3 { font-size: 23px; font-weight: 600; font-stretch: 100%; line-height: 1.2; }
 .result small { display: block; font-size: 12.5px; color: var(--muted); font-weight: 400; margin-top: 2px; }
 figure { margin: 6px 0 0; display: grid; gap: 8px; }
 .chart { overflow-x: auto; }
+.feature img { display: block; width: 100%; height: auto; border-radius: 4px; background: #fff; }
 .chart svg { display: block; width: 100%; min-width: 440px; height: auto; }
 figcaption { font-size: 14px; color: var(--muted); }
 .feature ul:not(.stack) { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
@@ -87,9 +88,9 @@ footer { font-family: var(--mono); font-size: 13px; color: var(--muted); border-
 <body>
 <div class="wrap">
   <header>
-    <div class="label">Fizyka · analiza danych · Warszawa</div>
+    <div class="label">Analiza danych · modelowanie ilościowe · Warszawa</div>
     <h1>Piotr Żandarski</h1>
-    <p class="lede">Studiuję fizykę na Uniwersytecie Warszawskim. Zajmuję się <em>danymi z&nbsp;prawdziwych pomiarów</em>: sygnałami z&nbsp;reaktora badawczego, widmami z&nbsp;detektora promieniowania, a&nbsp;poza uczelnią danymi biznesowymi w&nbsp;Pythonie i&nbsp;SQL. Szukam pierwszej pracy jako analityk danych.</p>
+    <p class="lede">Buduję modele prognostyczne i&nbsp;statystyczne na <em>rzeczywistych danych</em>, od czyszczenia szeregów czasowych po wynik przeliczony na decyzję i&nbsp;pieniądze. Studiuję fizykę (magisterka, UW) i&nbsp;szukam pracy jako analityk danych lub analityk ilościowy, najchętniej w&nbsp;energetyce, tradingu albo modelowaniu ryzyka kredytowego.</p>
     <div class="links">
       <a href="CV_Piotr_Zandarski.pdf">CV (PDF)</a>
       <a href="https://github.com/piotrzan">GitHub</a>
@@ -97,39 +98,72 @@ footer { font-family: var(--mono); font-size: 13px; color: var(--muted); border-
     </div>
   </header>
 
-  <section aria-labelledby="h-research">
-    <h2 id="h-research">Badania</h2>
+  <section aria-labelledby="h-energy">
+    <h2 id="h-energy">Projekty i&nbsp;doświadczenie</h2>
 
     <article class="feature">
-      <div class="meta">Praktyki · NCBJ Świerk · reaktor MARIA · 2026</div>
-      <h3>Temperaturowy współczynnik reaktywności wody w&nbsp;kanałach paliwowych</h3>
-      <p>Jak bardzo reaktor sam się hamuje, gdy woda chłodząca się nagrzewa? Z&nbsp;czterogodzinnego zapisu mocy, temperatur i&nbsp;pozycji pręta kompensacyjnego (144&nbsp;010 próbek przy 10&nbsp;Hz) policzyłem przebieg reaktywności metodą odwrotnej kinetyki punktowej, a&nbsp;potem dopasowałem do niego model liniowy.</p>
-      <div class="result">α<sub>K</sub> = (−1,2 ± 0,5) ¢/°C<small>wynik końcowy · rozrzut czterech metod estymacji</small></div>
+      <div class="meta">Projekt własny · 2026</div>
+      <h3>Prognoza cen energii na Rynku Dnia Następnego i&nbsp;wycena magazynu energii</h3>
+      <p>Prognozuję 24 godzinowe ceny energii dzień przed dostawą na danych pobranych prosto z&nbsp;API PSE (czerwiec 2024 – listopad 2026): ceny z&nbsp;aukcji dnia następnego oraz prognozy zapotrzebowania, wiatru i&nbsp;fotowoltaiki. Potem sprawdzam, ile ta prognoza jest warta w&nbsp;złotówkach dla magazynu energii, który kupuje tanio i&nbsp;sprzedaje drogo.</p>
+      <div class="result">−35% błędu prognozy<small>względem standardowej reguły „podobny dzień”, test na 489 dniach</small></div>
       <figure>
-        <div class="chart" id="chart" role="img" aria-label="Wykres wartości współczynnika alfa K reaktora MARIA w latach 2013–2026. Pomiar z 2026 roku, minus 1,2 plus minus 0,5 centa na stopień, mieści się w zakresie historycznym od minus 0,9 do minus 1,7."></div>
-        <figcaption>Mój pomiar na tle wcześniejszych pomiarów α<sub>K</sub> reaktora MARIA (dane historyczne z&nbsp;instrukcji pomiarowej; dla lat 2013–2018 bez podanej niepewności).</figcaption>
+        <img src="figures/mae_by_model.png" alt="Średni błąd prognozy: gradient boosting 86, regresja 92, reguła podobny dzień 132, reguła tydzień temu 152 PLN/MWh. Z danymi znanymi przed 12:00: gradient boosting 102, regresja 99." loading="lazy">
       </figure>
       <ul>
-        <li>Automatyczna detekcja sześciu kroków pomiarowych z&nbsp;sygnału pozycji pręta.</li>
-        <li>Wygładzanie i&nbsp;różniczkowanie mocy filtrem Savitzky-Golaya; całkowanie równań prekursorów neutronów opóźnionych.</li>
-        <li>Cztery niezależne estymacje, analiza wrażliwości na szerokość okna filtra, wykrycie i&nbsp;korekta błędu skali w&nbsp;kanale mocy.</li>
+        <li>Regresja (24 modele, po jednym na godzinę) i&nbsp;gradient boosting, test walk-forward bez zaglądania w&nbsp;przyszłość. Gradient boosting jest istotnie lepszy od regresji (test Diebolda-Mariano, p&nbsp;&lt;&nbsp;0,001).</li>
+        <li>Uczciwy wariant: tylko z&nbsp;danymi na pewno znanymi przed zamknięciem aukcji o&nbsp;12:00. Błąd rośnie wtedy z&nbsp;86 do około 100 PLN/MWh, i&nbsp;tyle jest warta dobra prognoza pogody na jutro.</li>
+        <li>Najsilniejszy czynnik ceny to zapotrzebowanie minus produkcja z&nbsp;wiatru i&nbsp;fotowoltaiki.</li>
+        <li>Kalibrowane przedziały predykcji 80%: przedział z&nbsp;regresji kwantylowej był za wąski (61% pokrycia), po kalibracji 74%.</li>
       </ul>
-      <ul class="stack"><li>Python</li><li>NumPy</li><li>SciPy</li><li>Matplotlib</li><li>LaTeX</li></ul>
+      <figure>
+        <img src="figures/price_profile.png" alt="Średnia cena według godziny doby w latach 2024, 2025 i 2026: głęboki dołek w środku dnia (około 260 PLN/MWh o 12:00) i szczyt wieczorem (do 850 PLN/MWh o 19:00)." loading="lazy">
+      </figure>
+      <p>Optymalizacja liniowa pracy magazynu 1&nbsp;MW / 2&nbsp;MWh: plan na podstawie prognozy, rozliczenie po rzeczywistych cenach. Lepsza prognoza daje 91% zamiast 81% maksymalnego zysku, czyli około 45&nbsp;tys. PLN więcej rocznie na każdy MW.</p>
+      <figure>
+        <img src="figures/battery.png" alt="Lewy wykres: udział zysku przy idealnej prognozie, od 79% dla reguły naiwnej do 91% dla gradient boosting. Prawy: maksymalny zysk z arbitrażu na dzień według miesięcy, od około 420 zł w grudniu 2025 do około 1960 zł we wrześniu 2026." loading="lazy">
+      </figure>
+      <ul class="stack"><li>Python</li><li>API PSE</li><li>pandas</li><li>scikit-learn</li><li>SciPy</li><li>optymalizacja liniowa</li></ul>
+      <p class="meta"><a href="https://github.com/piotrzan/pl-power-price-forecast">Kod i&nbsp;pełny opis na GitHubie</a></p>
+    </article>
+
+    <article class="feature">
+      <div class="meta">Projekt własny · 2026</div>
+      <h3>Model ryzyka kredytowego (PD) dla kredytów konsumpcyjnych</h3>
+      <p>Karta scoringowa zbudowana tak jak w&nbsp;banku, na 320 tys. rzeczywistych kredytów z&nbsp;platformy Lending Club. Model powstał na kredytach z&nbsp;lat 2010–2013, a&nbsp;sprawdziłem go na kredytach z&nbsp;2014 r., których nie widział.</p>
+      <div class="result">Gini 26% na nowych danych<small>27,8% na próbie modelowej, rozkład punktów stabilny (PSI 0,004)</small></div>
+      <ul>
+        <li>Grupowanie zmiennych, WoE i&nbsp;IV, regresja logistyczna, punkty scoringowe (600 punktów = szansa spłaty 50:1).</li>
+        <li>Walidacja: Gini, KS, kalibracja z&nbsp;testem dwumianowym, PSI. Model zaniża ryzyko w&nbsp;2014 r. (12,1% przewidywane, 14,6% rzeczywiste), więc wymaga ponownej kalibracji.</li>
+        <li>Strata oczekiwana PD × LGD × EAD: 113,5 mln USD przewidywane, 136,3 mln USD rzeczywiste.</li>
+        <li>Przy podobnym oprocentowaniu model rozdziela klientów: w&nbsp;kategorii C platformy 15,4% kontra 21,1% niespłaconych. Najbardziej ryzykowne 10% klientów daje tylko 5,4% zwrotu, więc ich ryzyko jest za tanio wycenione.</li>
+      </ul>
+      <figure>
+        <img src="figures/credit_return_by_risk.png" alt="Po lewej zwrot z kredytów według grup ryzyka z modelu: od 9,4% do 5,4% w najbardziej ryzykownej grupie. Po prawej odsetek niespłaconych w bezpieczniejszej i ryzykowniejszej połowie każdej kategorii ratingu Lending Club, np. w kategorii C 15,4% i 21,1%." loading="lazy">
+      </figure>
+      <ul class="stack"><li>Python</li><li>pandas</li><li>scikit-learn</li><li>regresja logistyczna</li><li>WoE / IV</li></ul>
+      <p class="meta"><a href="https://github.com/piotrzan/credit-risk-scorecard">Kod i&nbsp;pełny opis na GitHubie</a></p>
+    </article>
+
+    <article class="work">
+      <div class="meta">Praktyki · Narodowe Centrum Badań Jądrowych, Świerk · 2026</div>
+      <h3>Analiza danych z&nbsp;reaktora badawczego MARIA</h3>
+      <p>Napisałem w&nbsp;Pythonie obróbkę czterogodzinnego zapisu z&nbsp;systemu reaktora (144&nbsp;tys. pomiarów z&nbsp;5 czujników): automatyczny podział na 6 etapów pomiaru, filtrację szumu i&nbsp;estymację parametru opisującego, jak reaktor reaguje na wzrost temperatury wody. Porównałem cztery metody estymacji i&nbsp;oszacowałem niepewność; wynik mieści się w&nbsp;zakresie wcześniejszych pomiarów. Po drodze wykryłem błąd kalibracji w&nbsp;danych źródłowych (moc zawyżona trzykrotnie).</p>
+      <ul class="stack"><li>Python</li><li>NumPy</li><li>SciPy</li><li>regresja wielowymiarowa</li></ul>
     </article>
 
     <article class="work">
       <div class="meta">Projekt licencjacki · Zakład Fizyki Jądrowej UW</div>
-      <h3>Rozpad beta <sup>92</sup>Y w&nbsp;spektroskopii całkowitej absorpcji</h3>
-      <p>Analiza danych z&nbsp;detektora Lucrecia: budowa i&nbsp;filtrowanie histogramów, warunki koincydencji z&nbsp;sygnałem beta, przygotowanie wykresów i&nbsp;prezentacji wyników.</p>
-      <ul class="stack"><li>C++</li><li>ROOT</li><li>LaTeX / Beamer</li></ul>
+      <h3>Analiza danych z&nbsp;eksperymentu fizyki jądrowej</h3>
+      <p>Przetwarzanie danych zdarzeń z&nbsp;układu detektorów w&nbsp;C++: selekcja zdarzeń warunkami koincydencji, redukcja tła, budowa rozkładów i&nbsp;wizualizacja wyników.</p>
+      <ul class="stack"><li>C++</li></ul>
     </article>
   </section>
 
   <section aria-labelledby="h-proj">
-    <h2 id="h-proj">Projekty z&nbsp;analizy danych</h2>
+    <h2 id="h-proj">Inne projekty</h2>
     <div class="projects">
       <article class="work">
-        <h3>Predykcja rezygnacji klientów</h3>
+        <h3>Model odejść klientów</h3>
         <p>Pełny pipeline uczenia maszynowego: przygotowanie danych bez wycieku informacji, porównanie regresji logistycznej, Random Forest i&nbsp;Gradient Boosting, model udostępniony przez API, testy automatyczne i&nbsp;CI.</p>
         <ul class="stack"><li>scikit-learn</li><li>FastAPI</li><li>Docker</li><li>GitHub Actions</li></ul>
       </article>
@@ -138,11 +172,6 @@ footer { font-family: var(--mono); font-size: 13px; color: var(--muted); border-
         <p>Dane transakcyjne w&nbsp;PostgreSQL i&nbsp;recenzje w&nbsp;MongoDB; zapytania analityczne z&nbsp;CTE i&nbsp;funkcjami okienkowymi, całość uruchamiana jednym poleceniem przez Docker Compose.</p>
         <ul class="stack"><li>SQL</li><li>PostgreSQL</li><li>MongoDB</li><li>Docker Compose</li></ul>
       </article>
-      <article class="work">
-        <h3>Analiza rotacji pracowników</h3>
-        <p>Testy t i&nbsp;chi-kwadrat, regresja logistyczna i&nbsp;raport z&nbsp;wizualizacjami.</p>
-        <ul class="stack"><li>R</li><li>tidyverse</li><li>ggplot2</li><li>R Markdown</li></ul>
-      </article>
     </div>
     <p class="meta">Kod wszystkich projektów: <a href="https://github.com/piotrzan">github.com/piotrzan</a></p>
   </section>
@@ -150,9 +179,9 @@ footer { font-family: var(--mono); font-size: 13px; color: var(--muted); border-
   <section aria-labelledby="h-skills">
     <h2 id="h-skills">Umiejętności</h2>
     <dl class="skills">
-      <dt>języki programowania</dt><dd>Python (Pandas, NumPy, SciPy, scikit-learn), SQL, C++ / ROOT, R</dd>
-      <dt>narzędzia</dt><dd>Git, Docker, FastAPI, Excel (Power Query), Power BI, LaTeX</dd>
-      <dt>metody</dt><dd>regresja, testowanie hipotez, analiza niepewności, przetwarzanie sygnałów, metody numeryczne</dd>
+      <dt>metody ilościowe</dt><dd>modele PD i&nbsp;karty scoringowe (WoE, IV, Gini, KS, PSI), prognozowanie szeregów czasowych, modele regresyjne (OLS, Ridge, logistyczna), gradient boosting i&nbsp;random forest, walidacja modeli (walk-forward, testy istotności), przedziały predykcji i&nbsp;analiza niepewności, optymalizacja liniowa</dd>
+      <dt>narzędzia</dt><dd>Python (pandas, NumPy, SciPy, scikit-learn), SQL (PostgreSQL), Excel (Power Query), Power BI, Git, Docker, C++, R</dd>
+      <dt>branża</dt><dd>rynek dnia następnego i&nbsp;czynniki cen energii (OZE, ceny ujemne), arbitraż magazynów energii, ryzyko kredytowe (PD, LGD, EAD), fizyka reaktorów jądrowych</dd>
       <dt>języki</dt><dd>polski, angielski C1/C2, niemiecki B2</dd>
     </dl>
   </section>
@@ -167,38 +196,7 @@ footer { font-family: var(--mono); font-size: 13px; color: var(--muted); border-
 
 <script>
 (function () {
-  // α_K history for MARIA (Tabela 1 instrukcji 02-IJ-26) + my 2026 result
-  var data = [
-    { y: 2013, v: -1.4 }, { y: 2016, v: -1.3 }, { y: 2018, v: -1.7 },
-    { y: 2020, v: -0.9, e: 0.3 }, { y: 2024, v: -1.6, e: 0.3 }, { y: 2025, v: -1.0, e: 0.3 },
-    { y: 2026, v: -1.2, e: 0.5, me: true }
-  ];
-  var W = 640, H = 250, L = 64, R = 24, T = 18, B = 40;
-  var x0 = 2012, x1 = 2027, y0 = -2.0, y1 = 0.0;
-  var sx = function (x) { return L + (x - x0) / (x1 - x0) * (W - L - R); };
-  var sy = function (v) { return T + (y1 - v) / (y1 - y0) * (H - T - B); };
-  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, monospace" font-size="12">';
-  // historical band
-  s += '<rect x="' + L + '" y="' + sy(-0.9) + '" width="' + (W - L - R) + '" height="' + (sy(-1.7) - sy(-0.9)) + '" fill="var(--glow-soft)"/>';
-  [-2.0, -1.5, -1.0, -0.5, 0].forEach(function (v) {
-    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(v) + '" y2="' + sy(v) + '" stroke="var(--rule)" stroke-width="1"/>';
-    s += '<text x="' + (L - 10) + '" y="' + (sy(v) + 4) + '" text-anchor="end" fill="var(--muted)">' + v.toFixed(1).replace('.', ',').replace('-', '−') + '</text>';
-  });
-  s += '<text x="14" y="' + ((T + H - B) / 2) + '" fill="var(--muted)" transform="rotate(-90 14 ' + ((T + H - B) / 2) + ')" text-anchor="middle">α_K [¢/°C]</text>';
-  s += '<text x="' + (L + 8) + '" y="' + (sy(-0.9) - 6) + '" text-anchor="start" fill="var(--muted)" font-size="11">zakres 2013–2025</text>';
-  data.forEach(function (d) {
-    var cx = sx(d.y), cy = sy(d.v), col = d.me ? 'var(--glow)' : 'var(--ink)';
-    if (d.e) {
-      s += '<line x1="' + cx + '" x2="' + cx + '" y1="' + sy(d.v + d.e) + '" y2="' + sy(d.v - d.e) + '" stroke="' + col + '" stroke-width="' + (d.me ? 2 : 1.2) + '"/>';
-      [d.v + d.e, d.v - d.e].forEach(function (q) {
-        s += '<line x1="' + (cx - 5) + '" x2="' + (cx + 5) + '" y1="' + sy(q) + '" y2="' + sy(q) + '" stroke="' + col + '" stroke-width="' + (d.me ? 2 : 1.2) + '"/>';
-      });
-    }
-    s += '<circle class="pt" cx="' + cx + '" cy="' + cy + '" r="' + (d.me ? 5.5 : 4) + '" fill="' + (d.me ? 'var(--glow)' : 'var(--surface)') + '" stroke="' + col + '" stroke-width="1.6"><title>' + d.y + ': ' + String(d.v).replace('.', ',') + (d.e ? ' ± ' + String(d.e).replace('.', ',') : '') + ' ¢/°C</title></circle>';
-    s += '<text x="' + cx + '" y="' + (H - B + 20) + '" text-anchor="middle" fill="' + (d.me ? 'var(--glow)' : 'var(--muted)') + '"' + (d.me ? ' font-weight="500"' : '') + '>' + d.y + '</text>';
-  });
-  s += '</svg>';
-  document.getElementById('chart').innerHTML = s;
+
 
   var btn = document.getElementById('copy');
   btn.addEventListener('click', function () {
